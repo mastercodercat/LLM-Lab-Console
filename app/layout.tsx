@@ -7,11 +7,10 @@ import {
   AppShell,
   Burger,
   Group,
-  ActionIcon,
+  MantineThemeOverride,
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { useDisclosure, useLocalStorage } from "@mantine/hooks";
-import { IconSun, IconMoon } from "@tabler/icons-react";
 import { Sidebar } from "./components/Sidebar";
 import "@mantine/core/styles.css";
 import "./globals.css";
@@ -58,7 +57,6 @@ export default function RootLayout({
         <MantineProvider
           theme={
             {
-              colorScheme: colorScheme,
               primaryColor: "blue",
               fontFamily: "var(--font-raleway)",
               fontFamilyMonospace: "var(--font-raleway)",
@@ -83,7 +81,7 @@ export default function RootLayout({
                   },
                 },
               },
-            } as any
+            } satisfies MantineThemeOverride
           }
         >
           <Notifications />

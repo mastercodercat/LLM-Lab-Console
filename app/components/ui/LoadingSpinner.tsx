@@ -42,8 +42,8 @@ export function LoadingSpinner({
       <div
         className="spinner-box"
         style={{
-          ["--spinner-teal" as any]: theme.colors.teal[6],
-          ["--spinner-violet" as any]: theme.colors.violet[6],
+          ["--spinner-teal" as PropertyKey]: theme.colors.teal[6],
+          ["--spinner-violet" as PropertyKey]: theme.colors.violet[6],
         }}
       >
         <Loader

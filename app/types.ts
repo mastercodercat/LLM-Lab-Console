@@ -22,7 +22,7 @@ export interface ResponseMetrics {
   readabilityScore?: number; // 0–1
 
   // Extra info for tooltips/diagnostics
-  details?: Record<string, any>;
+  details?: Record<string, string | number | boolean | null>;
 }
 
 // Shape of a single LLM call result

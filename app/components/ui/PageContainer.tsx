@@ -35,7 +35,7 @@ export function PageContainer({
             withBorder
             radius="md"
             className="page-header"
-            style={{ ["--page-teal" as any]: theme.colors.teal[6] }}
+            style={{ ["--page-teal" as PropertyKey]: theme.colors.teal[6] }}
           >
             <Group
               justify="space-between"

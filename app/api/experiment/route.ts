@@ -59,7 +59,10 @@ export async function POST(req: Request) {
             r.timestamp instanceof Date ? r.timestamp : new Date(r.timestamp),
           latencyMs: r.latencyMs ?? null,
           usage: (r.usage ?? Prisma.JsonNull) as Prisma.InputJsonValue,
-          metrics: r.metrics as any,
+          metrics:
+            r.metrics == null
+              ? Prisma.JsonNull
+              : (r.metrics as unknown as Prisma.InputJsonValue),
         },
       });
     }

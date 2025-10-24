@@ -30,12 +30,13 @@ export function ExportButtons({ id }: { id: string }) {
         message: "Download started",
         color: "green",
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err?.message ?? "Export failed");
+      const errorMessage = err instanceof Error ? err.message : "Export failed";
+      setError(errorMessage);
       showNotification({
         title: "Export failed",
-        message: err?.message ?? "Export failed",
+        message: errorMessage,
         color: "red",
       });
     } finally {

@@ -11,9 +11,10 @@ import {
   Group,
   Box,
 } from "@mantine/core";
+import { ParameterSet } from "../types/experiment";
 
 interface ExperimentFormProps {
-  onSubmit: (prompt: string, parameterSets: any[]) => void;
+  onSubmit: (prompt: string, parameterSets: ParameterSet[]) => void;
   isLoading: boolean;
 }
 
@@ -38,7 +39,6 @@ export function ExperimentForm({ onSubmit, isLoading }: ExperimentFormProps) {
     for (let i = 0; i < safeSteps; i++) {
       const frac = safeSteps === 1 ? 0 : i / (safeSteps - 1);
       const t = tMin + (tMax - tMin) * frac;
-      const p = pMin + (pMax - pMin) * frac;
       parameterSets.push({
         temperature: Number(t.toFixed(2)),
         topP: Number(pMax),

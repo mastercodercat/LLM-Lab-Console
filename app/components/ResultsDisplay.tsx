@@ -66,7 +66,7 @@ function toPct(x: number | undefined | null, assumeZeroToOne = true): number {
 export function ResultsDisplay({ responses, onExport }: ResultsDisplayProps) {
   const theme = useMantineTheme();
 
-  const apiResponses: ApiResponse[] = responses.map((r: any) => ({
+  const apiResponses: ApiResponse[] = responses.map((r) => ({
     id: r.id,
     temperature: r.temperature ?? 0,
     topP: r.topP ?? 0,

@@ -1,7 +1,32 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../lib/prisma";
 
-function toCSV(set: any) {
+import { ExperimentSet, Prisma } from "@prisma/client";
+
+interface ExperimentSetWithResponses extends ExperimentSet {
+  responses: Array<{
+    id: string;
+    experimentSetId: string;
+    prompt: string;
+    response: string;
+    temperature: number;
+    topP: number;
+    maxTokens: number;
+    model: string | null;
+    frequencyPenalty: number | null;
+    presencePenalty: number | null;
+    stop: Prisma.JsonValue | null;
+    seed: number | null;
+    rawParams: Prisma.JsonValue | null;
+    timestamp: Date;
+    latencyMs: number | null;
+    usage: Prisma.JsonValue | null;
+    metrics: Prisma.JsonValue;
+    createdAt: Date;
+  }>;
+}
+
+function toCSV(set: ExperimentSetWithResponses) {
   const headers = [
     "responseId",
     "prompt",
@@ -17,8 +42,8 @@ function toCSV(set: any) {
     "metrics_json",
   ];
 
-  const rows = (set.responses || []).map((r: any) => {
-    const usage = r.usage || {};
+  const rows = (set.responses || []).map((r) => {
+    const usage = r.usage ? JSON.parse(String(r.usage)) : {};
     return [
       r.id,
       '"' + (r.prompt || "").replace(/"/g, '""') + '"',

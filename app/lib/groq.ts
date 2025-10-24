@@ -79,7 +79,7 @@ export async function generateResponse(
           },
           httpsAgent: proxyAgent,
           timeout: 60_000,
-          signal: opts.abortSignal as any,
+          signal: opts.abortSignal as AbortSignal,
           validateStatus: (s) => s >= 200 && s < 300,
         }
       );

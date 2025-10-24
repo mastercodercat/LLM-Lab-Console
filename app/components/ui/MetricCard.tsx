@@ -5,7 +5,6 @@ import {
   Group,
   Stack,
   Tooltip,
-  rem,
   useMantineTheme,
 } from "@mantine/core";
 import {

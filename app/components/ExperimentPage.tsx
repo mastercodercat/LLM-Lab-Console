@@ -4,12 +4,16 @@ import { Container, Title, Space } from "@mantine/core";
 import { ExperimentForm } from "./ExperimentForm";
 import { ResultsDisplay } from "./ResultsDisplay";
 import { ExperimentResponse } from "../types";
+import { ParameterSet } from "../types/experiment";
 
 export function ExperimentPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [responses, setResponses] = useState<ExperimentResponse[]>([]);
 
-  const handleExperiment = async (prompt: string, parameterSets: any[]) => {
+  const handleExperiment = async (
+    prompt: string,
+    parameterSets: ParameterSet[]
+  ) => {
     setIsLoading(true);
     try {
       const response = await fetch("/api/experiment", {

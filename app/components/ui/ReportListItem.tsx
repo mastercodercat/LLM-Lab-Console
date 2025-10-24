@@ -59,7 +59,7 @@ export function ReportListItem({
       tabIndex={0}
       aria-label={`View report for ${prompt || "Untitled Experiment"}`}
       className={`report-item ${hovered ? "report-hovered" : ""}`}
-      style={{ ["--report-violet" as any]: theme.colors.violet[6] }}
+      style={{ ["--report-violet" as PropertyKey]: theme.colors.violet[6] }}
       onClick={onDetail}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -73,7 +73,9 @@ export function ReportListItem({
           <Group>
             <div
               className="report-avatar"
-              style={{ ["--report-violet" as any]: theme.colors.violet[6] }}
+              style={{
+                ["--report-violet" as PropertyKey]: theme.colors.violet[6],
+              }}
             >
               <IconFlask size={18} />
             </div>

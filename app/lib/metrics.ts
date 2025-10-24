@@ -1,11 +1,14 @@
-export interface ResponseMetrics {
+import type { ResponseMetrics } from "../types";
+
+// Internal metrics type that must match the exported ResponseMetrics interface
+interface ComputedMetrics {
   coherenceScore: number;
   lengthScore: number;
   vocabularyRichnessScore: number;
-  repetitionPenalty: number;
-  readabilityScore: number;
+  repetitionPenalty?: number;
+  readabilityScore?: number;
   overallScore: number;
-  details: Record<string, any>;
+  details?: Record<string, string | number | boolean | null>;
 }
 
 type Weights = {
@@ -190,7 +193,7 @@ export function calculateMetrics(
 
   const overall = clamp0to100(Math.round(weighted * 100));
 
-  return {
+  const metrics: ResponseMetrics = {
     coherenceScore: clamp01(coherence),
     lengthScore: clamp01(length),
     vocabularyRichnessScore: clamp01(vocab),
@@ -200,10 +203,11 @@ export function calculateMetrics(
     details: {
       sentenceCount: sentences(response).length,
       wordCount: tokenizeWords(response).length,
-      requirements: reqs,
+      requirements: reqs.join(", "),
       fkGrade: readability.grade,
     },
   };
+  return metrics;
 }
 
 function calculateCoherenceScore(text: string): number {
