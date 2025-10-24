@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ExperimentSet {
+  id             String     @id @default(uuid())
+  prompt         String
+  title          String?
+  notes          String?
+  model          String?
+  weights        Json?
+  parameterSpace Json?
+  timestamp      DateTime   @default(now())
+  meta           Json?
+  responses      Response[]
+}
+
+model Response {
+  id              String        @id
+  experimentSetId String
+  experimentSet   ExperimentSet @relation(fields: [experimentSetId], references: [id], onDelete: Cascade)
+
+  prompt   String
+  response String @db.Text
+
+  temperature Float
+  topP        Float
+  maxTokens   Int
+
+  model            String?
+  frequencyPenalty Float?
+  presencePenalty  Float?
+  stop             Json?
+  seed             Int?
+  rawParams        Json?
+
+  timestamp DateTime
+  latencyMs Float?
+  usage     Json?
+  metrics   Json
+
+  createdAt DateTime @default(now())
+}
