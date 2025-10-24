@@ -1,3 +1,73 @@
+/**
+ * LLM Response Quality Metrics
+ * ===========================
+ *
+ * This module implements a comprehensive set of metrics for evaluating LLM response quality.
+ * Each metric is designed to capture different aspects of text quality and is normalized
+ * to a 0-1 scale for consistency.
+ *
+ * Core Metrics
+ * -----------
+ *
+ * 1. Coherence Score (30% weight by default)
+ *    - Measures the logical flow and connection between sentences
+ *    - Uses Jaccard similarity between adjacent sentences
+ *    - Considers sentence-to-sentence transitions
+ *    - Higher scores indicate better logical progression
+ *    - Range: 0 (disconnected) to 1 (highly coherent)
+ *
+ * 2. Vocabulary Richness Score (25% weight by default)
+ *    - Evaluates lexical diversity and sophistication
+ *    - Calculates unique word ratio with adjustments
+ *    - Considers word variety and repetition
+ *    - Penalizes overuse of common words
+ *    - Range: 0 (basic/repetitive) to 1 (diverse/sophisticated)
+ *
+ * 3. Length Score (20% weight by default)
+ *    - Assesses response completeness
+ *    - Based on word and sentence count
+ *    - Uses dynamic thresholds based on prompt
+ *    - Penalizes both too short and too long responses
+ *    - Range: 0 (inadequate length) to 1 (optimal length)
+ *
+ * 4. Readability Score (15% weight by default)
+ *    - Uses Flesch-Kincaid Grade Level
+ *    - Adjusted for target complexity level
+ *    - Considers sentence structure
+ *    - Balances complexity and clarity
+ *    - Range: 0 (inappropriate level) to 1 (optimal complexity)
+ *
+ * 5. Repetition Penalty (10% weight by default)
+ *    - Detects and penalizes repeated phrases
+ *    - Uses sliding window analysis
+ *    - Considers context-appropriate repetition
+ *    - Higher scores mean less problematic repetition
+ *    - Range: 0 (high repetition) to 1 (optimal variation)
+ *
+ * Overall Score Calculation
+ * ------------------------
+ * - Weighted sum of individual metrics
+ * - Weights are configurable via MetricWeights interface
+ * - Default weights prioritize coherence and vocabulary
+ * - Final score normalized to 0-100 scale
+ * - Includes detailed breakdown in metrics.details
+ *
+ * Implementation Notes
+ * -------------------
+ * - Text normalization removes punctuation and case sensitivity
+ * - Sentence splitting handles multiple terminators (.!?)
+ * - Word tokenization preserves meaningful hyphenation
+ * - Jaccard similarity used for semantic similarity
+ * - All calculations optimized for real-time performance
+ *
+ * Usage Example:
+ * ```typescript
+ * const metrics = calculateMetrics(response, prompt, customWeights);
+ * console.log(metrics.overallScore); // 0-100 score
+ * console.log(metrics.details); // Detailed breakdown
+ * ```
+ */
+
 import type { ResponseMetrics } from "../types";
 
 // Internal metrics type that must match the exported ResponseMetrics interface
