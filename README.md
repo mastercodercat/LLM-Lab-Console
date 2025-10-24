@@ -5,7 +5,7 @@ An advanced platform for running, analyzing, and comparing LLM responses with au
 ## Tech Stack
 
 - **Framework:** Next.js 14 with App Router
-- **UI Components:** Mantine v7
+- **UI Components:** Mantine v8
 - **Database:** PostgreSQL with Prisma ORM
 - **API Integration:** Groq API (OpenAI-compatible)
 - **State Management:** React Hooks + Context
