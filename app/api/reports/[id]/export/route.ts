@@ -43,20 +43,43 @@ function toCSV(set: ExperimentSetWithResponses) {
   ];
 
   const rows = (set.responses || []).map((r) => {
-    const usage = r.usage ? JSON.parse(String(r.usage)) : {};
+    // Safely parse usage data
+    let usage: {
+      promptTokens?: number;
+      completionTokens?: number;
+      totalTokens?: number;
+    } = {};
+    try {
+      usage = typeof r.usage === "string" ? JSON.parse(r.usage) : r.usage || {};
+    } catch (e) {
+      console.warn("Failed to parse usage data:", e);
+    }
+
+    // Safely parse metrics data
+    let metrics: Record<string, unknown> = {};
+    try {
+      metrics =
+        typeof r.metrics === "string" ? JSON.parse(r.metrics) : r.metrics || {};
+    } catch (e) {
+      console.warn("Failed to parse metrics data:", e);
+    }
+
+    // Format timestamp in ISO format
+    const timestamp = r.timestamp ? new Date(r.timestamp).toISOString() : "";
+
     return [
-      r.id,
+      r.id || "",
       '"' + (r.prompt || "").replace(/"/g, '""') + '"',
       '"' + (r.response || "").replace(/"/g, '""') + '"',
-      r.temperature ?? "",
-      r.topP ?? "",
-      r.maxTokens ?? "",
-      r.timestamp ?? "",
-      r.latencyMs ?? "",
-      usage.promptTokens ?? "",
-      usage.completionTokens ?? "",
-      usage.totalTokens ?? "",
-      '"' + JSON.stringify(r.metrics || {}).replace(/"/g, '""') + '"',
+      r.temperature?.toString() || "",
+      r.topP?.toString() || "",
+      r.maxTokens?.toString() || "",
+      timestamp,
+      r.latencyMs?.toString() || "",
+      usage?.promptTokens?.toString() || "",
+      usage?.completionTokens?.toString() || "",
+      usage?.totalTokens?.toString() || "",
+      '"' + JSON.stringify(metrics).replace(/"/g, '""') + '"',
     ].join(",");
   });
 
@@ -91,6 +114,8 @@ export async function GET(
     return NextResponse.json({ set });
   } catch (err) {
     console.error("Export error", err);
-    return NextResponse.json({ error: "Failed to export" }, { status: 500 });
+    const errorMessage =
+      err instanceof Error ? err.message : "Failed to export";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
